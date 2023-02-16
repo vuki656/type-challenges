@@ -18,7 +18,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Includes<T extends readonly any[], U> = any
+type Includes<TList extends readonly any[], TItem> = TList extends [infer TSingleItem, ...infer TOtherItems]
+    ? Equal<TSingleItem, TItem> extends true
+        ? true 
+        : Includes<TOtherItems, TItem>
+    : false
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
