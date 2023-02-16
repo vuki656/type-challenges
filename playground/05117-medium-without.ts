@@ -18,7 +18,35 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Without<T, U> = any
+ type Single<T extends number[], U extends number> =  T extends [infer Single, ...infer Other]
+    ? Equal<U, Single> extends true
+        ? Other
+        : Other extends number[] ? Without<Other, U> : never
+    : never
+
+// type Multiple<T extends number[], U extends number[]> = 
+//     T extends [infer FirstListItem, ...infer FirstListOther]
+//         ? U extends [infer SecondListItem, ...infer SecondListOther]
+//             ? Equal<FirstListItem, SecondListItem> extends true
+//                     ? FirstListOther extends number[] ? SecondListOther extends number[] 
+//                         ? Without<FirstListOther, SecondListOther> 
+//                         : never
+//                     : never 
+//                 : never
+//             : never
+//         : never
+
+type Without<T extends number[], U extends number[] | number> = U extends number 
+    ? Single<T, U>
+    : never
+
+type AAAAAAAAAAAA = Without<[1, 2], 1>
+
+// type Includes<TList extends readonly any[], TItem> = TList extends [infer TSingleItem, ...infer TOtherItems]
+//     ? Equal<TSingleItem, TItem> extends true
+//         ? true 
+//         : Includes<TOtherItems, TItem>
+//     : false
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
